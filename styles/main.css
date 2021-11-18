@@ -1,0 +1,10 @@
+.login, .register {
+    display: flex !important;
+    justify-content: center;
+}
+
+.user-details {
+    display: flex;
+    justify-self: space-between;
+    padding: 2rem 0;
+}
