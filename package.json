@@ -2,10 +2,10 @@
   "name": "nck-test",
   "private": true,
   "scripts": {
-    "start:dev": "nodemon server",
+    "start:dev": "node server",
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next build && NODE_ENV=production node server.js",
     "lint": "next lint"
   },
   "dependencies": {

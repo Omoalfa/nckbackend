@@ -53,3 +53,17 @@ export const restockInventory = {
     data: null,
     isSuccessful: false
 }
+
+export const addToCart = {
+    isLoading: false,
+    error: null,
+    data: null,
+    isSuccessful: false
+}
+
+export const clearCart = {
+    isLoading: false,
+    error: null,
+    data: null,
+    isSuccessful: false
+}

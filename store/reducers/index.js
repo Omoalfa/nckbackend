@@ -7,6 +7,8 @@ import inventory from './inventory'
 import createInventory from './createInventory'
 import deleteInventory from './deleteInventory'
 import restockInventory from './restockInventory'
+import addToCart from './addToCart'
+import clearCart from './clearCart'
 
 const rootReducer = combineReducers({
     inventories,
@@ -16,7 +18,9 @@ const rootReducer = combineReducers({
     inventory,
     createInventory,
     deleteInventory,
-    restockInventory
+    restockInventory,
+    addToCart,
+    clearCart
 });
 
 

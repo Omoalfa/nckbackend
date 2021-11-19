@@ -44,7 +44,7 @@ const verifyToken = async (req, res, next) => {
     }
 }
 
-const isAdmin = async (req, res) => {
+const isAdmin = async (req, res, next) => {
     const auth = req.headers.authorization
     let token
 

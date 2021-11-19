@@ -19,17 +19,17 @@ export const getInventoriesCleanup = () => ({
     type: 'GET_INVENTORIES_CLEANUP'
 })
 
-export const getInventories = () => async dispatch => {
+export const getInventories = (payload) => async dispatch => {
     dispatch(getInventoriesStart())
 
     try {
         const reqBody = {
-            path: 'inventories',
+            path: `inventories`,
             method: 'GET',
         }
-        const result = await AxiosCall(reqBody);
+        const {data} = await AxiosCall(reqBody);
 
-        dispatch(getInventoriesSuccess(result.data))
+        dispatch(getInventoriesSuccess(data))
     } catch (error) {
         const err = ErrorHandler(error)
         dispatch(getInventoriesFail(err))

@@ -5,6 +5,7 @@ const inventorySchema = new Schema({
     quantity: {
         type: Number,
         min: 0,
+        default: 1,
     },
     price: {
         type: Number,

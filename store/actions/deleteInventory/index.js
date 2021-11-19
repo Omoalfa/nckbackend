@@ -2,30 +2,30 @@ import AxiosCall from '../../../utils/axios'
 import ErrorHandler from '../../../utils/error'
 
 const deleteInventoryStart = () => ({
-    type: 'DELET_INVENTORY_START',
+    type: 'DELETE_INVENTORY_START',
 })
 
 const deleteInventoryFail = (payload) => ({
-    type: 'DELET_INVENTORY_FAIL',
+    type: 'DELETE_INVENTORY_FAIL',
     payload
 })
 
 const deleteInventorySuccess = (payload) => ({
-    type: 'DELET_INVENTORY_SUCCESS',
+    type: 'DELETE_INVENTORY_SUCCESS',
     payload
 })
 
 export const deleteInventoryCleanup = () => ({
-    type: 'DELET_INVENTORY_CLEANUP'
+    type: 'DELETE_INVENTORY_CLEANUP'
 })
 
-export const deleteInventory = () => async dispatch => {
+export const deleteInventory = (payload) => async dispatch => {
     dispatch(deleteInventoryStart())
 
     try {
         const reqBody = {
-            path: 'users/me',
-            method: 'GET',
+            path: 'inventories/' + payload,
+            method: 'DELETE',
         }
         const result = await AxiosCall(reqBody);
 

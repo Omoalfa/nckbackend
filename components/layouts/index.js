@@ -1,11 +1,43 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/router';
-import { Layout, Menu } from 'antd';
+import { Layout, Badge, message } from 'antd';
+import Image from 'next/image'
+import { useDispatch, useSelector } from 'react-redux';
+import { ShoppingCartOutlined, ClearOutlined, LogoutOutlined } from '@ant-design/icons'
 
-const { Header, Content, Footer } = Layout;
+import { clearCart, clearCartCleanup } from '../../store/actions/clearCart'
+import { getMe } from '../../store/actions/getMe'
 
-const ProtectedLayout = ({children}) => {
+import logo from '../../logo.png';
+
+const { Content, Footer } = Layout;
+
+const ProtectedLayout = ({children, cart}) => {
     const router = useRouter()
+    const dispatch = useDispatch()
+    const cartState = useSelector(s => s.clearCart)
+
+    const logoutAction = () => {
+        localStorage.removeItem('authToken');
+
+        router.push('/login');
+    }
+
+    const clearCartAction = () => {
+        dispatch(clearCart())
+    }
+
+    useEffect(() => {
+        if (cartState.isSuccessful) {
+            message.success('Cart cleared successfully')
+            dispatch(clearCartCleanup())
+            dispatch(getMe())
+        } else if (cartState.error) {
+            message.error(cartState.error)
+            dispatch(clearCartCleanup())
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [cartState])
     
     useEffect(() => {
         const token = localStorage.getItem('authToken')
@@ -13,19 +45,30 @@ const ProtectedLayout = ({children}) => {
         if (!token) {
             router.push('/login')
         }
-    })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <Layout className="layout">
-            <Header>
-            <div className="logo" />
-            <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-                {new Array(15).fill(null).map((_, index) => {
-                const key = index + 1;
-                return <Menu.Item key={key}>{`nav ${key}`}</Menu.Item>;
-                })}
-            </Menu>
-            </Header>
+            <header className="header">
+            <div className="logo">
+                <Image src={logo} alt='NCK' />
+                <ul className="navbar">
+                    <li key="1" disabled>
+                        <Badge count={cart.length}>
+                            <ShoppingCartOutlined style={{fontSize: '30px'}}/> My Cart
+                        </Badge>
+                    </li>
+                    <li key="2" onClick={logoutAction}>
+                        <LogoutOutlined style={{fontSize: '30px'}}/> Log Out
+                    </li>
+                    <li key="3" onClick={clearCartAction}>
+                        <ClearOutlined style={{fontSize: '30px'}}/> Clear My Cart
+                    </li>
+                </ul>
+            </div>
+            
+            </header>
             <Content style={{ padding: '0 50px' }}>
                 <div>{children}</div>
             </Content>

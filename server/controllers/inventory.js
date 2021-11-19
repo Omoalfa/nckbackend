@@ -1,10 +1,10 @@
 const Inventories = require('../models/Inventory')
 
 const createInventory = async (req, res) => {
-    const { name, quatity, price } = req.body;
+    const { name, quantity, price } = req.body;
 
     try {
-        const inventory = new Inventories({ name, quatity, price });
+        const inventory = new Inventories({ name, quantity, price });
 
         await inventory.save()
 
@@ -29,7 +29,7 @@ const addInventoryToCart = async (req, res) => {
     const user = req.user;
 
     try {
-        const inventory = await Inventory.findOne({ _id });
+        const inventory = await Inventories.findOne({ _id });
 
 
         if (!inventory) {
@@ -101,16 +101,43 @@ const addInventoryToCart = async (req, res) => {
 //     }
 // }
 
+const deleteCart = async (req, res) => {
+    const user = req.user
+
+    try {
+        user.cart = [];
+
+        await user.save()
+
+        return res.status(200).json({
+            message: 'User cart cleared successfully',
+            data: null,
+            success: true,
+            status: 200
+        })
+    } catch (error) {
+        return res.status(501).json({
+            message: 'something went wrong',
+            status: 501,
+            error,
+            success: false
+        })
+    }
+}
+
 const restockInventory = async (req, res) => {
     const { quantity } = req.body;
     const { _id } = req.params;
+    console.log(quantity)
 
     try {
         const inventory = await Inventories.findOne({ _id });
 
-        inventory.quatity += quantity;
+        inventory.quantity += quantity;
 
-        inventory.save();
+        await inventory.save();
+
+        console.log(inventory.quantity)
 
         return res.status(200).json({
             message: 'User inventory updated successfully',
@@ -183,25 +210,11 @@ const readInventory = async (req, res) => {
 
 const readInventories = async (req, res) => {
     try {
-        const page = req.query.page || 1;
-        const limit = req.query.limit || 10;
-
         const documents = await Inventories.find();
-        const meta = {
-            totalInventories: documents.length,
-            page,
-            limit,
-            totalPages: Math.floor(documents.length / limit) + 1,
-        }
-        const inventories = await Inventories.find()
-                                .skip(page)
-                                .limit(limit)
-                                .sort({ createdAt: -1 });
-
+        
         return res.status(200).json({
             message: 'Inventories successully fetched',
-            data: inventories,
-            meta,
+            data: documents,
             success: true,
             status: 200
         })
@@ -216,5 +229,5 @@ const readInventories = async (req, res) => {
 }
 
 module.exports = {
-    createInventory, readInventories, deleteInventory, addInventoryToCart, restockInventory, readInventory
+    createInventory, readInventories, deleteInventory, addInventoryToCart, restockInventory, readInventory, deleteCart
 }

@@ -8,3 +8,35 @@
     justify-self: space-between;
     padding: 2rem 0;
 }
+
+.ant-col-8 {
+    margin-bottom: 15px;
+}
+
+.logo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header {
+    padding: 0 3rem !important;
+    background-color: aliceblue;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+}
+
+.navbar > li {
+    margin-left: 20px;
+    cursor: pointer;
+    padding: 2rem 1rem;
+}
+
+.navbar > li:hover {
+    background-color: white;
+    color: aliceblue;
+}
